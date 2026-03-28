@@ -2,17 +2,112 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>CRUD de Usuarios</title>
+  <title>login de Usuarios</title>
+
+  <div class="panel-usuario">
+    <h2>Panel de Usuario</h2>
+    <p>Bienvenido al sistema CRUD</p>
+    <button onclick="alert('Bienvenido')">Entrar</button>
+
+</div>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .panel-usuario {
+    margin-top: 20px;
+    padding: 0px;
+    background-color: #d1f7c4;
+    border-radius: 3px;
+}
+
+
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #4facfe;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00c6ff;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 15px;
+    }
+
+    li {
+      background: #f1f1f1;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .actions button {
+      width: auto;
+      margin-left: 5px;
+      padding: 5px 10px;
+    }
+
+    .delete {
+      background: #ff4d4d;
+    }
+
+    .delete:hover {
+      background: #cc0000;
+    }
+  </style>
 </head>
 <body>
 
-<h1>CRUD de Usuarios</h1>
+<div class="container">
+  <h1>CRUD de Usuarios</h1>
 
-<input type="text" id="name" placeholder="Nombre">
-<input type="email" id="email" placeholder="Correo">
-<button onclick="addUser()">Agregar</button>
+  <input type="text" id="name" placeholder="Nombre">
+  <input type="email" id="email" placeholder="Correo">
+  <button onclick="addUser()">Agregar Usuario</button>
 
-<ul id="userList"></ul>
+  <ul id="userList"></ul>
+</div>
 
 <script>
 let users = [];
@@ -22,12 +117,15 @@ function addUser() {
   const email = document.getElementById('email').value;
 
   if (!name || !email) {
-    alert("Completa los campos");
+    alert("Completar todos los campos correctamente");
     return;
   }
 
   users.push({name, email});
   renderUsers();
+
+  document.getElementById('name').value = "";
+  document.getElementById('email').value = "";
 }
 
 function renderUsers() {
@@ -38,7 +136,10 @@ function renderUsers() {
     list.innerHTML += `
       <li>
         ${user.name} - ${user.email}
-        <button onclick="deleteUser(${index})">Eliminar</button>
+        <div class="actions">
+          <button onclick="editUser(${index})">Editar</button>
+          <button class="delete" onclick="deleteUser(${index})">Eliminar</button>
+        </div>
       </li>
     `;
   });
@@ -47,6 +148,18 @@ function renderUsers() {
 function deleteUser(index) {
   users.splice(index, 1);
   renderUsers();
+}
+
+function editUser(index) {
+  const user = users[index];
+
+  const newName = prompt("Nuevo nombre:", user.name);
+  const newEmail = prompt("Nuevo correo:", user.email);
+
+  if (newName && newEmail) {
+    users[index] = { name: newName, email: newEmail };
+    renderUsers();
+  }
 }
 </script>
 
